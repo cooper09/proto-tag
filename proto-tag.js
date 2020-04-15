@@ -66,7 +66,7 @@
             var url = 'https://sleepy-everglades-99189.herokuapp.com/crystal'
             var timestamp = new Date()
 
-            var params = 'category='+dataArr[0].value+'&source='+dataArr[1].value+'&utm_medium='+dataArr[0].data.item1+'&landing_page='+dataArr[1].data.item1+'&timestamp='+timestamp;
+            var params = 'hash='+ hashNo +'&category='+dataArr[0].value+'&source='+dataArr[1].value+'&utm_medium='+dataArr[0].data.item1+'&landing_page='+dataArr[1].data.item1+'&timestamp='+timestamp;
             
             http.open('POST', url, true);
 
