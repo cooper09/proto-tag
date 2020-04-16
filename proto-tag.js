@@ -5,94 +5,68 @@
 ( function( ) {
     
     const Tracker = new function(){
+        console.log("The Lone Tracker is here: ");
+        this.datastore = []
 
-        const Inventory = {
-            book1: {
-                title: "Moby Dick",
-                available: true,
-                late: false
-            },
-            book2: {
-                title: "Man of La Mancha",
-                available: false,
-                late: true
-            }
-        }
-        
-        this.items = {}
-        this.cartObj = []
+        this.addItem = (key, value ) => {
+            console.log("Tracker.addItem key: ", key, " value: ", value )
+            if (key && value ) {
+                this.datastore.push({key: key, value: value})
+                return this.datastore
+            }//end iff
+        }//end add
 
-        this.cartObj = Inventory;
+        this.checkIn = (key) => {
+            for (var i=0; this.datastore.length ; ++i) {
+                if ( this.datastore[i].key === key) {
+                    this.datastore[i].value.available = true;
+                    return this.datastore;
+                }//end iffy
+            }//end for 
+            return this.datastore;
+        }//end checkIn
 
-        console.log("Coopers library is open for business: ", this.cartObj );
+        this.checkOut = (key) => {
+            for (var i=0; this.datastore.length ; ++i) {
+                if ( this.datastore[i].key === key) {
+                    this.datastore[i].value.available = false;
+                    return this.datastore;
+                }//end iffy
+            }//end for 
+            return this.datastore;
+        }//end checkOut
 
-        this.findBook = (title) =>{
-            for (book in this.cartObj ){
-                console.log("Our book: ", book )
-                //use each item in the object array as a key and whatever
-                // comes after as the value
-                key = book;
-                value = this.cartObj[book];
+        this.findAt = (key) =>{
+            console.log("FindAt: ", key )
+            for (var i=0; i < this.datastore.length ; ++i) {
+                
+                if ( this.datastore[i].key === key) {
+                    return this.datastore[i].value.title;
+                }//end iffy
+             
+            }//end for 
+            return "Book not found" //this.datastore
+        } //end findAt
 
-                console.log("our title: ", value.title )
-                if (value.title == title ) {
-                    console.log("Found book ", value.available )
-                    if (value.available !== false ) {
-                        console.log("And its available: ", value.available)
-                        return book; //The book is in inventory and available
-                    } else {
-                        console.log("Sorry, that book has been checked out")
-                        return false;// The book is inventory but checked out
-                    } //end if available   
-                } 
-                return false;  //Book just not in inventory
-            }//end for look
-        }//end findBook
-        
-        this.isAvailable = (title) => {
-            console.log("Find book: ", title );
-            console.log("cartObj: ", this.cartObj );
- 
-            let foundBook = this.findBook(title);
-             if (foundBook ){
-                return foundBook
-             } else {
-                 console.log("isAvailable - book not found")
-             };
-      
-           /* for(var i in vars ){
-                varKey = i;
-                varValue = vars[i];
-                varObj = {
-                    key : i,
-                    value : vars[i]
-                }
-                varArr.push(varObj)
-              } */
-        }//end isAvailable
+        this.size = () => {
+            return this.datastore.length;
+        }//end size
 
-        this.checkOut = (title) => {
-            console.log("Check book in:", title );
-            if (Tracker.isAvailable(title)) {
-                console.log("found book - set available to 0" );
-                let takeOutBook = this.findBook(title);
-                console.log("Take out book: ", takeOutBook.value)   
-            } else {
-                console.log("Checkout - Sorry book is unavailable")
-            }
-
-        }
-        this.returnBook = () => {
-            console.log("Return book here...");
-        }
-
-        this.generateLibrary = () => {
-            console.log("Generate and refress library whenever there's a change in a book's status")
-        } 
+        this.displayData = () =>{
+            console.log("Current Data Store: ", this.datastore )
+        }// displayData
     }//end Tracker
 
-    Tracker.checkOut("Moby Dick");
-
-
+    Tracker.displayData();
+    Tracker.addItem("book0", {title:"Moby Dick", available: true })
+    Tracker.displayData();
+    Tracker.checkOut("book0")
+    Tracker.displayData()
+    Tracker.checkIn("book0")
+    Tracker.displayData()
+    console.log("found book: " , Tracker.findAt("book0"))
+    Tracker.addItem("book1", {title:"Man of La Mancha", available: false })
+    console.log("found book: " , Tracker.findAt("book1"))
+    console.log("How many books do we have in our library: ", Tracker.size())
 })()
 
