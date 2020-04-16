@@ -16,23 +16,27 @@
         }//end add
 
         this.checkIn = (key) => {
-            for (var i=0; this.datastore.length ; ++i) {
-                if ( this.datastore[i].key === key) {
-                    this.datastore[i].value.available = true;
-                    return this.datastore;
-                }//end iffy
-            }//end for 
+
+            this.datastore.map ((book) => {
+                if (book.key === key) {
+                    book.value.available=true;
+                    return this;
+                }
+            })
             return this.datastore;
         }//end checkIn
 
         this.checkOut = (key) => {
-            for (var i=0; this.datastore.length ; ++i) {
-                if ( this.datastore[i].key === key) {
-                    this.datastore[i].value.available = false;
-                    return this.datastore;
-                }//end iffy
-            }//end for 
-            return this.datastore;
+
+            this.datastore.map( (book) => {
+                console.log("Book: ", book )
+                if (book.key === key) {
+                    book.value.available = false;
+                }
+                return this;
+            })
+    
+            return this.datastore; 
         }//end checkOut
 
         this.findAt = (key) =>{
@@ -66,5 +70,6 @@
     console.log("found book: " , Tracker.findAt("book0"))
     Tracker.addItem("book1", {title:"Man of La Mancha", available: false })
     console.log("found book: " , Tracker.findAt("book1"))
+    console.log("We carry "+ Tracker.size() + " books in our library")
 })()
 
